@@ -1,6 +1,6 @@
 {
   "name": "sdenv",
-  "version": "1.0.2",
+  "version": "1.1.0-beta.2",
   "description": "基于jsdom和瑞数vmp开发的补环境框架，模拟浏览器执行网页代码。",
   "directories": {
     "test": "test"
@@ -37,8 +37,8 @@
     "log4js": "^6.9.1",
     "module-alias": "^2.2.3",
     "node-addon-api": "^7.0.0",
-    "sdenv-extend": "^1.7.0",
-    "sdenv-jsdom": "^2.0.1"
+    "sdenv-extend": "^1.8.2",
+    "sdenv-jsdom": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",

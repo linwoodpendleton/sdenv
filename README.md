@@ -4,10 +4,15 @@
 > [免责声明](./DISCLAIMER.md)
 
 > [!TIP]
-> 可通过拦截xhr相关方法提取后缀，后缀的相关问题可自行研究，且开源项目sdenv鼓励使用者发布关于使用该项目的教程文章。
+> 💬 为了让交流更顺畅，推荐使用[GitHub Discussions](https://github.com/pysunday/sdenv/discussions)（私发微信消息可能不回，沟通建议优先Discussions + 交流群）：  
+> 🙏 [提问/求助](https://github.com/pysunday/sdenv/discussions/categories/q-a)  
+> 🙌 [分享经验或技巧](https://github.com/pysunday/sdenv/discussions/categories/show-and-tell)  
+> 💬 [功能建议](https://github.com/pysunday/sdenv/discussions/categories/general)  
+> 💡 [讨论新想法](https://github.com/pysunday/sdenv/discussions/categories/ideas)  
+> 📚 [查阅已有讨论和答案](https://github.com/pysunday/sdenv/discussions)
 
 <h1 align="center">
-    <img width="100" height="100" src="https://github.com/pysunday/sdenv/blob/main/logo.png" alt=""><br>
+    <img width="100" height="100" src="./logo.png" alt=""><br>
     sdenv
 </h1>
 
@@ -26,17 +31,19 @@ sdenv是一个javascript运行时补环境框架，与github上其它补环境�
 
 **需要注意windows中安装Visual Studio时需要勾选`使用C++的桌面开发`选项**
 
-![安装Visual Studio注意](https://github.com/pysunday/sdenv/blob/main/static/vs-tip.png)
+![安装Visual Studio注意](./static/vs-tip.png)
 
 ## 可能出现的问题
 
-1. npm安装node-gyp报错：请确保操作系统有c++编译环境与python环境，报错示例（感谢用户风流小混沌提供图片素材）:
-![npm安装报错](https://github.com/pysunday/sdenv/blob/main/static/install-error.jpeg)
+1. npm安装node-gyp报错：请确保操作系统有c++编译环境与python环境，报错示例（感谢用户风流小混沌提供报错图片）:
+![npm安装报错](./static/install-error.jpeg)
 2. 安装缓慢及canvas报错(**基本都是网络问题**)：由于canvas安装会优先从github获取现成的包，因此请在安装前先设置代理或者其它国内源，如果安装仍然失败请使用npm官方源+代理方式重新尝试；
+3. example样例执行报错sdenv路径不存在：请先看文档[example readme](./example/readme.md)，报错示例（感谢用户mochazi提供报错图片）:
+![example路径报错](./static/example-path-error.png)
 
 注意：canvas安装失败不会中断安装，但是在运行时，如果网页代码中有调用canvas相关API会报错，如有使用canvas相关api请务必确认安装成功！
 
-**解决完报错后记得重新执行下依赖安装！如不确定是否本地问题，可以先以docker方式（参见[docker运行use-docker样例](#docker运行use-docker样例)）运行和验证！**
+**解决完报错后记得重新执行下依赖安装！如不确定是否本地问题，可以先以docker方式运行和验证！**
 
 有其它问题请提issues！
 
@@ -46,68 +53,47 @@ sdenv是一个javascript运行时补环境框架，与github上其它补环境�
 
 ### npm包方式使用
 
-1. 创建自己的项目
-2. 项目中安装sdenv：`npm i sdenv`（请确保安装没有报错, 如果是制作命令行工具可使用-g全局安装）
-3. 在项目中导入api并使用（可以参考example目录下的用例）：
-```javascript
-const { jsdomFromText, jsdomFromUrl, browser } = require('sdenv');
-```
-
-### 源码方式使用
-
-clone项目仓库`git clone https://github.com/pysunday/sdenv.git`后执行依赖安装`npm i`，确保依赖安装成功后即可直接运行example目录下的样例文件了。
+1. 项目中安装sdenv：`npm i sdenv`
+2. 在项目中导入api并使用（可以参考example目录下的用例）：`const { jsdomFromText, jsdomFromUrl, browser } = require('sdenv');`
 
 ### docker方式使用
 
-可使用阿里云地址替代官方源：`crpi-vkjftqt0qsdk2jmc.cn-shanghai.personal.cr.aliyuncs.com/pysunday/sdenv-[arm64/x86_64]:latest`
-
-查看sdenv版本：`docker run --rm pysunday/sdenv-[arm64/x86_64]:latest -e "console.log(require('sdenv').version)"`
-
-#### docker运行容器内的样例文件
-
 首先执行`uname -a`后查看架构类型，支持`arm64`和`x86_64`，接着执行对应的命令：
 
-1. 运行本地代码：`docker run --rm pysunday/sdenv-[arm64/x86_64]:latest ./example/use-local/index.js`
+1. 查看sdenv版本：`docker run --rm pysunday/sdenv-[arm64/x86_64]:latest -e "console.log(require('sdenv').version)"`
+2. 验证sdenv是否适用：`docker run --rm pysunday/sdenv-[arm64/x86_64] check 需要测试的网站`
+3. 运行宿主机文件（如目录example内文件）：`docker run --rm -v $(pwd)/example/use-remote/passive.js:/app/myapp pysunday/sdenv-[arm64/x86_64]:latest myapp`
 
-![use-local样例调用](https://github.com/pysunday/sdenv/blob/main/static/docker-example-use-local.png)
+注意：
+  * docker仅内置check命令，对应项目文件`example/use-check/index.js`
+  * docker默认工作目录为`/app/`，请将项目文件映射到该目录下再运行
 
-2. 运行网站代码：`docker run --rm pysunday/sdenv-[arm64/x86_64]:latest ./example/use-remote/index.js`
+### 源码方式使用
 
-![use-remote样例调用](https://github.com/pysunday/sdenv/blob/main/static/docker-example-use-remote.png)
+1. clone项目后执行依赖安装`npm i`
+2. 验证sdenv是否适用：`node example/use-check/index.js 需要测试的网站`
 
-#### docker运行use-docker样例
+### 全局方式使用
 
-v1.0.0版本增加use-docker样例，该样例提供全局使用sdenv制作命令行命令的演示，如您使用python调用sdenv，可通过全局安装sdenv（`npm i -g sdenv`）后编写请求代码并打印后返回给python使用。
+全局安装后会生成全局可执行命令sdenv
 
-同时该样例通过外部传参的方式动态调用sdenv模拟浏览器打开目标网站，因此可直接使用该样例测试目标网站在sdenv中是否可用。
+1. 全局安装sdenv: `npm i sdenv -g`
+2. 验证sdenv是否适用：`sdenv 需要测试的网站`
 
-调用方式：`docker run --rm pysunday/sdenv-arm64:latest ./example/use-docker/index.js 目标网站地址`
+### npx方式使用
 
-![use-docker样例调用](https://github.com/pysunday/sdenv/blob/main/static/docker-example-use-docker.png)
+1. 验证sdenv是否适用：`npx sdenv 需要测试的网站`
 
-#### docker运行宿主机本地文件
+### 使用示例
 
-以本地文件`./example/use-docker/index.js`示例，`uname -a`的结果为`arm64`，利用docker的-v参数映射本地文件再执行该文件，如：
-
-```bash
-docker run --rm -v $(pwd)/example/use-docker/index.js:/app.js pysunday/sdenv-arm64:latest /app.js 目标网站地址
-```
-
-此处`$(pwd)/example/use-docker/index.js`为宿主机执行文件的绝对路径，`/app.js`为映射到容器中文件的绝对路径。
-
-#### docker打包
-
-可以参考项目的`Dockerfile.example`文件，通过命令`uname -a`查看架构类型，然后取消对应的`FROM`语句注释，修改文件名为`Dockerfile`，如arm64架构的Dockerfile文件内容：
-
-```docker
-FROM pysunday/sdenv_base:arm64
-
-ENV NODE_PATH=/usr/local/lib/node_modules
-RUN n 20 && npm install -g npm@latest node-gyp@latest sdenv@latest
-COPY example example
-
-ENTRYPOINT ["/usr/local/bin/node"]
-```
+1. 检查sdenv是否适用
+![检查sdenv是否适用](./static/docker-example-use-check.png)
+2. 运行本地文件
+![sdenv运行本地用例](./static/docker-example-use-local.png)
+3. 运行案例1（被动接口请求）
+![sdenv运行案例1](./static/docker-example-use-passive.png)
+4. 运行案例2（主动接口请求）
+![sdenv运行案例2](./static/docker-example-use-active.png)
 
 ## API
 
@@ -136,7 +122,7 @@ Safari | N
 除返回与jsdom保持一致外，同时返回sdenv属性，如常用的属性值有：`const { window, cookieJar, sdenv, ... } = jsdomFromText(...)`
 
 ```javascript
-const { Script } = require("vm");
+const vm = require("vm");
 const { jsdomFromText } = require('sdenv');
 const dom = jsdomFromText('<html>...</html>', {
     url: 'https://host/path',
@@ -144,7 +130,7 @@ const dom = jsdomFromText('<html>...</html>', {
     contentType: "text/html",
     runScripts: "outside-only", // 不会执行html文本中的js代码
 })
-new Script('javascript代码').runInContext(dom.getInternalVMContext()); // 执行javascript代码
+vm.runInContext('javascript代码', dom.getInternalVMContext());
 console.log('cookie值：', dom.cookieJar.getCookieStringSync('https://host'));
 ```
 
@@ -156,7 +142,7 @@ console.log('cookie值：', dom.cookieJar.getCookieStringSync('https://host'));
 
 ### jsdomFromUrl(url: string, config?: object)
 
-除返回与jsdom保持一致外，同时返回sdenv属性，如常用的属性值有：`const { window, cookieJar, sdenv, ... } = jsdomFromUrl(...)`
+返回与jsdom保持一致，同时sdenv实例会挂载到window下，常用的属性值有：`const { window, cookieJar, serialize, ... } = jsdomFromUrl(...)`
 
 ```javascript
 const { jsdomFromUrl } = require('sdenv');
@@ -166,7 +152,7 @@ const twoDom = await jsdomFromUrl('https://host/path', { ...config, cookieJar: o
 console.log('cookie值：', twoDom.cookieJar.getCookieStringSync('https://host'));
 ```
 
-**注：代码仅演示，具体使用请移步[use-remote样例](./example/use-remote/index.js)**
+**注：代码仅演示，具体使用请移步[use-remote样例目录](./example/use-remote/)**
 
 进一步阅读：
 
@@ -175,6 +161,64 @@ console.log('cookie值：', twoDom.cookieJar.getCookieStringSync('https://host')
 [jsdom的CookieJar API](https://github.com/jsdom/jsdom?tab=readme-ov-file#cookie-jars)
 
 [jsdom的fromURL API](https://github.com/jsdom/jsdom?tab=readme-ov-file#fromurl)
+
+### jsdom API
+
+为方便开发，sdenv通过jsdom属性值主动暴露jsdom API，同时暴露额外agentFactory、 Request方便自定义资源管理器，如：
+
+```javascript
+const { jsdom } = require('sdenv');
+const { ResourceLoader, agentFactory, Request } = jsdom;
+```
+
+## 其它
+
+### 监听页面跳转
+
+sdenv提供专属事件名称来监听页面事件，最终通过addEventListener方法监听事件并挂载相关方法，见下表：
+
+事件名称 | 事件说明
+-------- | --------
+`sdenv:location.replace` | replace方法引起的跳转
+`sdenv:location.assign` | assign方法引起的跳转
+`sdenv:exit` | 引起页面关闭最终会执行的监听事件
+
+### window代理
+
+sdenv支持vm中window值变化代理（Proxy），需要注意的是，开启window代理需要在beforeParse方法中通过`sdenv.getConfig('window')(配置项对象)`方法导入配置项，如：
+
+```javascript
+const { jsdomFromUrl } = require('sdenv');
+const dom = await jsdomFromUrl('https://host/path', {
+    beforeParse: function (window, sdenv) {
+        sdenv.getConfig('window')({ ... });
+    }
+});
+```
+
+提供如下配置项及使用场景
+
+1. window取值直接报错，如对process的检测，将数组通过windowGetterErrorKeys传入，如：`sdenv.getConfig('window')({ windowGetterErrorKeys: ['process'] });`
+2. window取值返回undefined，如对jsdom的runScripts参数检测，将数组通过windowGetterUndefinedKeys传入，如：`sdenv.getConfig('window')({ windowGetterUndefinedKeys: ['_runScripts'] });`
+3. 打印window操作及操作结果，如：
+```javascript
+sdenv.getConfig('window')({ log: (type, prop) => {
+    if (type === 'get') {
+        console.log('getter => ' + prop);
+    }
+} });
+```
+4. 控制window操作返回结果
+```javascript
+sdenv.getConfig('window')({ parse: (type, prop, value) => {
+    if (type === 'set' && prop === '需要控制返回值的属性名称') {
+        return '返回给调用者任何值';
+    }
+    return value;
+} });
+```
+
+**注意：如window代理功能不符合预期请及时通过issues或者discussions反馈!**
 
 ## sdenv-extend使用说明
 
@@ -186,6 +230,14 @@ sdenv-extend具体功能可参考项目内[README文档](https://github.com/pysu
 
 sdenv-jsdom包是sdenv补环境框架能运行瑞数vmp网站并产生正确cookie的核心，该包仓库fork自jsdom仓库，并应对瑞数vmp对jsdom的检测做了代码修改，因此sdenv可以过网站对jsdom的检测!
 
+## 代码贡献
+
+感谢所有为本项目做出贡献的开发者！
+
+<a href="https://github.com/pysunday/sdenv/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=pysunday/sdenv" />
+</a>
+
 ## 声明
 
 该项目的开发基于瑞数vmp网站，不能保证在其它反爬虫产品稳定使用，出现问题请及时提issues或者提pull参与共建!
@@ -194,4 +246,4 @@ sdenv-jsdom包是sdenv补环境框架能运行瑞数vmp网站并产生正确cook
 
 订阅号不定时发表版本动态及技术文章：码功
 
-<img src="https://github.com/pysunday/sdenv/raw/main/static/qrcode.png" alt="订阅号：码功" width="320">
+<img src="./static/qrcode.png" alt="订阅号：码功" width="320">

@@ -1,5 +1,6 @@
 module.exports = (sdenv) => {
-  const window = sdenv.memory.sdWindow;
+  const window = sdenv.memory.window;
+  const { setFuncNative } = sdenv.tools;
 
   const DeprecatedStorageQuota = function DeprecatedStorageQuota() {
     throw new TypeError("Illegal constructor");
@@ -42,8 +43,9 @@ module.exports = (sdenv) => {
       return "Google Inc.";
     }
   };
-  sdenv.tools.mixin(window.navigator, NavigatorCustomize.prototype, ['userAgent', 'platform', 'appVersion', 'vendor']);
+  sdenv.tools.mixin(window.navigator, NavigatorCustomize.prototype, ['userAgent', 'platform', 'appVersion', 'vendor', 'sendBeacon']);
   Object.keys(window.navigator.__proto__).forEach(name => {
     sdenv.tools.setFuncNative(Object.getOwnPropertyDescriptor(window.navigator.__proto__, name)?.get, 'get');
   })
+  setFuncNative(window.navigator.sendBeacon = function sendBeacon(url) {});
 }

@@ -1,5 +1,5 @@
 module.exports = (sdenv) => {
-  const window = sdenv.memory.sdWindow;
+  const window = sdenv.memory.window;
   const { setFuncNative, setObjName } = sdenv.tools;
 
   const CanvasRenderingContext2D = function CanvasRenderingContext2D() {

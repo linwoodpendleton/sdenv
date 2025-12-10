@@ -1,5 +1,5 @@
 module.exports = (sdenv) => {
-  sdenv.memory.sdWindow.chrome = {
+  sdenv.memory.window.chrome = {
     app: {
       isInstalled: false,
       InstallState: {

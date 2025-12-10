@@ -2,6 +2,7 @@
 node_modules/
 output/
 !example/use-local/output/
+example/use-proxy/
 npm-debug.log
 yarn-error.log
 .idea

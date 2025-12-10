@@ -1,5 +1,5 @@
 module.exports = (sdenv) => {
-  const window = sdenv.memory.sdWindow;
+  const window = sdenv.memory.window;
   const setFuncNative = sdenv.tools.setFuncNative;
 
   Object.defineProperty(window.location, 'replace', {

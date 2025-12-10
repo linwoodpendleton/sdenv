@@ -1,5 +1,5 @@
 module.exports = (sdenv) => {
-  const window = sdenv.memory.sdWindow;
+  const window = sdenv.memory.window;
 
   [window.Navigation, window.navigation] = sdenv.tools.getNativeProto('Navigation', 'navigation', {
     canGoBack: false,

@@ -1,5 +1,5 @@
 module.exports = (sdenv) => {
-  const window = sdenv.memory.sdWindow;
+  const window = sdenv.memory.window;
 
   [window.VisualViewport, window.visualViewport] = sdenv.tools.getNativeProto('VisualViewport', 'visualViewport', {
     height: 904,

@@ -1,5 +1,5 @@
 module.exports = (sdenv) => {
-  const window = sdenv.memory.sdWindow;
+  const window = sdenv.memory.window;
   const databases = new Map();
   class IDBVersionChangeEvent {
     constructor(type, target) {

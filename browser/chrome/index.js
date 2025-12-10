@@ -14,4 +14,12 @@ module.exports = (sdenv) => {
   require('./document-element')(sdenv);
   require('./CanvasRenderingContext2D')(sdenv);
   require('./matchMedia')(sdenv);
+  require('./Request')(sdenv);
+  require('./console')(sdenv);
+  require('./Date')(sdenv);
+  require('./URL')(sdenv);
+  require('./Worker')(sdenv);
+  require('./CSSStyleDeclaration')(sdenv)
+  require('./Object')(sdenv)
+  return sdenv;
 }

@@ -1,11 +1,12 @@
-try{require('module-alias')()}catch(err){};
+#!/usr/bin/env node
+
+try{require('module-alias')(require('../../utils/paths').basePath)}catch(err){};
 const fs = require('fs');
 const path = require('path');
-const { Script } = require("vm");
-const logger = require('sdenv/utils/logger');
-const { jsdomFromText } = require('sdenv');
+const vm = require("vm");
+const { jsdomFromText, logger, simpleDecrypt } = require('sdenv');
 
-const baseUrl = "https://wcjs.sbj.cnipa.gov.cn"
+const baseUrl = simpleDecrypt("UU1NSUoDFhZOWlNKF0pbUxdaV1BJWBdeVk8XWlc=")
 
 const files = {
   // 此处的文件可以通过运行npx rs-reverse makecode tarurl自动生成
@@ -30,7 +31,7 @@ function initBrowser(window, cookieJar) {
   })
 }
 
-async function loadPages() {
+function loadPages() {
   const htmltext = getFile('html');
   const jstext = getFile('js');
   const dom = jsdomFromText(htmltext, {
@@ -40,7 +41,7 @@ async function loadPages() {
     runScripts: "outside-only",
   })
   initBrowser(dom.window, dom.cookieJar);
-  new Script(jstext).runInContext(dom.getInternalVMContext());
+  vm.runInContext(jstext, dom.getInternalVMContext());
 }
 
 loadPages()
